@@ -1,1 +1,3 @@
-# GeometryGuru
+## Demo
+
+![Demo](assets/demo.gif)
