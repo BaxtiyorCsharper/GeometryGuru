@@ -1,4 +1,9 @@
-﻿Console.WriteLine("\nGeometry Guru lohihasiga xush kelibsiz!");
+﻿static void PrintInfo()
+{
+    Console.WriteLine("\nGeometry Guru lohihasiga xush kelibsiz!");
+}
+static string EnterProgram()
+{
 Console.WriteLine("Dasturni ishga tushirishni xohlaysizmi?\n");
 Console.WriteLine("Ishga tushirish uchun 1 sonini kiriting:");
 Console.Write("To'xtatish uchun istalgan son kiritng:\nJavobingiz:");
@@ -54,4 +59,9 @@ while(userInput == 1)
     Console.WriteLine();
     
 }
-Console.WriteLine("\nXayr salomat bo'ling\n");
+string result = "Xayr salomat bo'ling\n";
+return result;
+}
+PrintInfo();
+string natija = EnterProgram();
+Console.WriteLine(natija);
