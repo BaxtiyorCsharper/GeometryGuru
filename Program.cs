@@ -1,67 +1,154 @@
-﻿static void PrintInfo()
+﻿using System;
+
+namespace GeometryApp
 {
-    Console.WriteLine("\nGeometry Guru lohihasiga xush kelibsiz!");
-}
-static string EnterProgram()
-{
-Console.WriteLine("Dasturni ishga tushirishni xohlaysizmi?\n");
-Console.WriteLine("Ishga tushirish uchun 1 sonini kiriting:");
-Console.Write("To'xtatish uchun istalgan son kiritng:\nJavobingiz:");
-int userInput = Convert.ToInt32(Console.ReadLine());
-Console.WriteLine("");
-while(userInput == 1)
-{
-    System.Console.WriteLine("Dastur ishga tushdi");
-    Console.WriteLine("Quyidagi amallardan birini tanlang:");
-    Console.WriteLine("1.To'g'ri to'rtburchakning yuzini hisoblash");
-    Console.WriteLine("2.Kvadrat yuzini hisoblash");
-    Console.Write("(tanlash:1/2)\nJavobingiz:");
-    int userChoice = Convert.ToInt32(Console.ReadLine());
-    Console.WriteLine("");
-    /* 1.To‘g‘ri to‘rtburchak — Qarama-qarshi tomonlari teng va parallel
-    To'g'ri to'rtburchakning yuzini hisoblash: S = a * b
-    2.Kvadrat — hamma tomoni bir xil uzunlikda bo‘lgan to‘g‘ri to‘rtburchak.
-    Kvadrat yuzini hisoblash: S = a * a     */
-    switch (userChoice)
+    class Program
     {
-        case 1:
+        static void Main(string[] args)
+        {
+            try
             {
-                Console.WriteLine("To'g'ri to'rtburchakning yuzini hisoblashni tanladingiz");
-                Console.WriteLine("To'g'ri to'rtburchakning tomonlarini kiriting:");
-                Console.Write("a=");
-                decimal aTamon = Convert.ToDecimal(Console.ReadLine());
-                Console.Write("b=");
-                decimal bTamon = Convert.ToDecimal(Console.ReadLine());
-                decimal resultS = aTamon * bTamon;
-                Console.WriteLine("To'g'ri to'rtburchakning yuzasi:" + resultS + "\n");
-                break;
+                GeometryGuru app = new GeometryGuru();
+                app.Start();
             }
-        
-
-        case 2:
+            catch (Exception ex)
             {
-                Console.WriteLine("Kvadrat yuzini hisoblashni tanladingiz");
-                Console.Write("Kvadratning tomonini kiriting:");
-                decimal kvadratTomoni = Convert.ToDecimal(Console.ReadLine());
-                decimal resultS = kvadratTomoni * kvadratTomoni;
-                Console.WriteLine("Kvadratning yuzasi:"+ resultS + "\n");
-                break;
+                Console.WriteLine("Umumiy xatolik: " + ex.Message);
             }
-        default:
-        Console.WriteLine("Kechirasiz ikkita amaldan birini tanlashingiz kerak!\n");
-        break;
-
+            finally
+            {
+                Console.WriteLine("\nDastur yakunlandi.");
+            }
+        }
     }
-    Console.WriteLine("Dasturni qayta ishga tushirishni xohlaysizmi?\n");
-    Console.WriteLine("Ishga tushirish uchun 1 sonini kiriting");
-    Console.Write("To'xtatish uchun istalgan son kiritng\nJavobingiz:");
-    userInput = Convert.ToInt32(Console.ReadLine());
-    Console.WriteLine();
-    
+
+    class GeometryGuru
+    {
+        public void Start()
+        {
+            PrintInfo();
+            string result = EnterProgram();
+            Console.WriteLine(result);
+        }
+
+        private void PrintInfo()
+        {
+            Console.WriteLine("\nGeometry Guru loyihasiga xush kelibsiz!");
+        }
+
+        private string EnterProgram()
+        {
+            Console.WriteLine("Dasturni ishga tushirishni xohlaysizmi?");
+            Console.WriteLine("Ishga tushirish uchun 1 ni kiriting.");
+            Console.Write("To'xtatish uchun boshqa son kiriting:\nJavobingiz: ");
+
+            int userInput = ReadInt();
+
+            while (userInput == 1)
+            {
+                Console.WriteLine("\nDastur ishga tushdi.");
+                Console.WriteLine("1. To'g'ri to'rtburchak yuzasi (S = a * b)");
+                Console.WriteLine("2. Kvadrat yuzasi (S = a * a)");
+                Console.Write("(tanlash:1/2)\nJavobingiz: ");
+
+                int userChoice = ReadInt();
+                Console.WriteLine();
+
+                switch (userChoice)
+                {
+                    case 1:
+                        CalculateRectangle();
+                        break;
+
+                    case 2:
+                        CalculateSquare();
+                        break;
+
+                    default:
+                        Console.WriteLine("Faqat 1 yoki 2 tanlang!\n");
+                        break;
+                }
+
+                Console.WriteLine("Dasturni qayta ishga tushirishni xohlaysizmi?");
+                Console.Write("Ishga tushirish uchun 1 kiriting, to'xtatish uchun boshqa son:\nJavobingiz: ");
+                userInput = ReadInt();
+                Console.WriteLine();
+            }
+
+            return "Xayr, salomat bo'ling!";
+        }
+
+        private void CalculateRectangle()
+        {
+            try
+            {
+                Console.Write("a = ");
+                decimal a = ReadDecimalPositive();
+
+                Console.Write("b = ");
+                decimal b = ReadDecimalPositive();
+
+                decimal result = a * b;
+                Console.WriteLine("To'g'ri to'rtburchak yuzasi: " + result + "\n");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Xatolik: " + ex.Message);
+            }
+        }
+
+        private void CalculateSquare()
+        {
+            try
+            {
+                Console.Write("Kvadrat tomoni = ");
+                decimal side = ReadDecimalPositive();
+
+                decimal result = side * side;
+                Console.WriteLine("Kvadrat yuzasi: " + result + "\n");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Xatolik: " + ex.Message);
+            }
+        }
+
+        private int ReadInt()
+        {
+            while (true)
+            {
+                try
+                {
+                    return Convert.ToInt32(Console.ReadLine());
+                }
+                catch (FormatException)
+                {
+                    Console.Write("Noto‘g‘ri format! Butun son kiriting: ");
+                }
+            }
+        }
+
+        private decimal ReadDecimalPositive()
+        {
+            while (true)
+            {
+                try
+                {
+                    decimal value = Convert.ToDecimal(Console.ReadLine());
+
+                    if (value <= 0)
+                    {
+                        Console.Write("Musbat son kiriting: ");
+                        continue;
+                    }
+
+                    return value;
+                }
+                catch (FormatException)
+                {
+                    Console.Write("Noto‘g‘ri format! Son kiriting: ");
+                }
+            }
+        }
+    }
 }
-string result = "Xayr salomat bo'ling\n";
-return result;
-}
-PrintInfo();
-string natija = EnterProgram();
-Console.WriteLine(natija);
